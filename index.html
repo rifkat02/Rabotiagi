@@ -2,341 +2,322 @@
 <html lang="ru" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Мастера Тут Оренбург — Диспетчерская Ремонта</title>
-    <!-- Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мастеры Тут — Диспетчерская Ремонта</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        navy: {
-                            800: '#1e293b',
-                            900: '#0f172a',
-                            950: '#030712',
-                        }
-                    }
-                }
-            }
         }
     </script>
-    <style>
-        /* Скрытие полосы прокрутки для чистейшего мобильного вида */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
 </head>
-<body class="bg-gray-100 dark:bg-slate-950 text-gray-800 dark:text-slate-100 min-h-screen flex flex-col font-sans select-none transition-colors duration-300 pb-20">
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans select-none transition-colors duration-200 pb-20">
 
-    <!-- Шапка приложения -->
-    <header class="bg-blue-600 dark:bg-slate-900 text-white p-3 flex items-center justify-between shadow-lg sticky top-0 z-30 transition-colors duration-300 border-b border-blue-500/20 dark:border-slate-800">
-        <!-- Кнопка вызова меню -->
-        <button id="menuBtn" class="text-xl p-2 hover:bg-blue-700 dark:hover:bg-slate-800 rounded-xl transition">
+    <!-- Хедер -->
+    <header class="bg-blue-600 dark:bg-blue-950 text-white p-4 flex items-center justify-between shadow-md sticky top-0 z-30 transition-colors duration-200">
+        <button id="menuBtn" class="text-xl p-2 hover:bg-blue-700 dark:hover:bg-blue-900 rounded-lg transition">
             <i class="fa-solid fa-bars"></i>
         </button>
-
-        <!-- Логотип и Название (Двойной клик = Секретный вход в админку) -->
-        <div class="flex items-center space-x-2 cursor-pointer py-1 px-2 rounded-xl hover:bg-blue-700/50 dark:hover:bg-slate-800/50 transition" ondblclick="openAdminModal()" title="Мастеры Тут">
-            <!-- Векторный логотип: Геолокация + Инструменты -->
-            <div class="w-9 h-9 bg-white dark:bg-blue-600 text-blue-600 dark:text-white rounded-xl flex items-center justify-center shadow-md relative overflow-hidden">
-                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                    <!-- Иконка метки с крышей и инструментами -->
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" opacity="0.3"/>
-                    <path d="M12 3c-3.31 0-6 2.69-6 6 0 4.5 6 11 6 11s6-6.5 6-11c0-3.31-2.69-6-6-6zm-1 4.5l3.5 3.5-1 1L10 8.5l-2.5 2.5-1-1L10 6.5l1 1z"/>
-                </svg>
+        
+        <!-- Секретный вход в админку: двойной клик по шапке -->
+        <div class="flex items-center space-x-2 cursor-pointer text-center select-none" ondblclick="openAdminModal()" title="Мастеры Тут">
+            <div class="w-8 h-8 rounded-full bg-blue-500 dark:bg-blue-800 border-2 border-white/80 flex items-center justify-center text-white text-sm font-black shadow-inner">
+                <i class="fa-solid fa-location-dot text-xs text-yellow-300 mr-0.5"></i>М
             </div>
-            <div class="flex flex-col">
-                <span class="text-base font-black tracking-tight leading-none bg-gradient-to-r from-white via-blue-100 to-blue-200 dark:from-white dark:to-blue-400 bg-clip-text text-transparent">МАСТЕРЫ ТУТ</span>
-                <span class="text-[9px] font-bold text-blue-200 dark:text-blue-400 tracking-wider uppercase">Диспетчерская</span>
+            <div class="text-left">
+                <h1 class="text-base font-extrabold tracking-wide leading-none">МАСТЕРЫ ТУТ</h1>
+                <p class="text-[9px] text-blue-200 uppercase tracking-widest mt-0.5 font-semibold">Диспетчерская</p>
             </div>
         </div>
 
-        <!-- Кнопка переключения темы -->
-        <button onclick="toggleTheme()" class="text-lg p-2 hover:bg-blue-700 dark:hover:bg-slate-800 rounded-xl transition text-yellow-300 dark:text-yellow-400">
-            <i id="themeIcon" class="fa-solid fa-sun"></i>
+        <!-- Переключатель темы -->
+        <button onclick="toggleTheme()" class="text-xl p-2 hover:bg-blue-700 dark:hover:bg-blue-900 rounded-lg transition">
+            <i id="themeIcon" class="fa-solid fa-sun text-yellow-300"></i>
         </button>
     </header>
 
     <!-- Боковое меню (Drawer Overlay) -->
-    <div id="drawerOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity"></div>
+    <div id="drawerOverlay" class="fixed inset-0 bg-black/60 z-40 hidden transition-opacity"></div>
     
     <!-- Боковое меню (Drawer) -->
-    <aside id="drawer" class="fixed top-0 left-0 w-80 h-full bg-white dark:bg-slate-900 z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+    <aside id="drawer" class="fixed top-0 left-0 w-72 h-full bg-white dark:bg-slate-900 z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
         <div>
-            <!-- Шапка бокового меню -->
-            <div class="p-5 bg-blue-600 dark:bg-slate-950 text-white flex items-center justify-between border-b dark:border-slate-800">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white/10 dark:bg-blue-600/20 rounded-xl flex items-center justify-center text-xl text-white">
-                        <i class="fa-solid fa-toolbox"></i>
-                    </div>
+            <div class="p-5 bg-blue-600 dark:bg-blue-950 text-white flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-screwdriver-wrench text-yellow-300 text-xl"></i>
                     <div>
-                        <h2 class="font-black text-lg tracking-wide">Услуги ремонта</h2>
-                        <p class="text-xs text-blue-200 dark:text-slate-400">Выберите категорию</p>
+                        <h2 class="font-bold text-lg leading-tight">Услуги ремонта</h2>
+                        <p class="text-xs text-blue-200">Выберите направление</p>
                     </div>
                 </div>
-                <button id="closeDrawer" class="text-white/80 hover:text-white text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
+                <button id="closeDrawer" class="text-white text-xl hover:text-gray-200"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <!-- Список строительных услуг -->
-            <nav class="p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-140px)] no-scrollbar" id="servicesList">
+            <nav class="p-2 space-y-1 overflow-y-auto max-h-[calc(100vh-140px)]" id="servicesList">
                 <!-- Генерируется через JS -->
             </nav>
         </div>
 
-        <div class="p-4 border-t dark:border-slate-800/80 bg-gray-50 dark:bg-slate-950 text-center text-xs text-gray-500 dark:text-slate-500">
-            «Мастеры Тут» • Сервис Диспетчеризации v3.0
+        <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-center text-xs text-slate-400">
+            Мастеры Тут • v3.0 Pro
         </div>
     </aside>
 
-    <!-- Главный контейнер -->
+    <!-- Главный контент -->
     <main class="flex-1 p-4 max-w-md w-full mx-auto" id="mainContent">
         
         <!-- Вкладка: Главная (Форма заказа) -->
         <div id="homeTab" class="space-y-4">
-            
-            <!-- Баннер Брендинга -->
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-slate-900 dark:to-blue-950 rounded-2xl p-4 text-white shadow-md relative overflow-hidden flex items-center justify-between border border-blue-500/30 dark:border-slate-800">
-                <div class="z-10 max-w-[70%]">
-                    <span class="bg-white/20 dark:bg-blue-500/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Быстрый вызов</span>
-                    <h3 class="text-base font-extrabold mt-1">Мастер будет у вас в нужное время!</h3>
-                    <p class="text-xs text-blue-100 dark:text-slate-300 mt-1 leading-tight">Заполните объем работ, и диспетчер подберет свободного профи.</p>
-                </div>
-                <div class="text-5xl text-white/20 dark:text-blue-500/20 transform rotate-12">
-                    <i class="fa-solid fa-helmet-safety"></i>
-                </div>
-            </div>
-
-            <!-- Форма заказа -->
-            <div id="orderView" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border dark:border-slate-800 p-5 space-y-4 transition-colors">
-                <div class="flex items-center space-x-3 border-b dark:border-slate-800 pb-3">
-                    <div id="serviceIcon" class="w-12 h-12 bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center text-2xl font-bold shadow-inner">
+            <div id="orderView" class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 space-y-4">
+                
+                <!-- Заголовок выбранной услуги -->
+                <div class="flex items-center space-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <div id="serviceIcon" class="w-12 h-12 bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center text-2xl shadow-inner">
                         <i class="fa-solid fa-paint-roller"></i>
                     </div>
                     <div>
-                        <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Категория</span>
-                        <h2 id="selectedServiceName" class="text-lg font-black text-gray-800 dark:text-white leading-tight">Шпаклевка стен</h2>
+                        <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Основная работа</span>
+                        <h2 id="selectedServiceName" class="text-xl font-bold text-slate-800 dark:text-white leading-tight">Шпаклевка стен</h2>
                     </div>
                 </div>
 
                 <form id="orderForm" class="space-y-4">
-                    <!-- Объем / Квадратура -->
+                    
+                    <!-- Выбор района Оренбурга -->
                     <div>
-                        <label class="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">Объем (кв.м) / Описание задачи</label>
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Район выезда</label>
+                        <select id="districtInput" class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
+                            <option value="Дзержинский район">Дзержинский район</option>
+                            <option value="Ленинский район">Ленинский район</option>
+                            <option value="Промышленный район">Промышленный район</option>
+                            <option value="Центральный район">Центральный район</option>
+                        </select>
+                    </div>
+
+                    <!-- Объем работ и расчёт -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300">Объем (кв.м / ед.)</label>
+                            <span class="text-[10px] text-blue-500 dark:text-blue-400 font-semibold" id="pricePerUnit">250 ₽ / кв.м</span>
+                        </div>
                         <div class="relative">
-                            <input type="text" id="areaInput" placeholder="Например: 45 кв.м (2 комнаты под окраску)" required
-                                class="w-full p-3.5 bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white pl-10 transition">
-                            <i class="fa-solid fa-ruler-combined absolute left-3.5 top-4 text-gray-400 dark:text-slate-500"></i>
+                            <input type="number" id="areaInput" placeholder="Введите количество кв.м" min="1" required oninput="calculateEstimate()"
+                                class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white pl-10">
+                            <i class="fa-solid fa-ruler-combined absolute left-3.5 top-3.5 text-slate-400"></i>
                         </div>
                     </div>
 
-                    <!-- Имя клиента -->
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">Ваше имя</label>
-                        <div class="relative">
-                            <input type="text" id="nameInput" placeholder="Александр" required
-                                class="w-full p-3.5 bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white pl-10 transition">
-                            <i class="fa-solid fa-user absolute left-3.5 top-4 text-gray-400 dark:text-slate-500"></i>
+                    <!-- Мульти-выбор сопутствующих работ -->
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-200">Дополнительные работы:</label>
+                        <div class="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" value="Грунтовка (+50 ₽/м²)" data-price="50" onchange="calculateEstimate()" class="extra-service rounded text-blue-600 focus:ring-blue-500">
+                                <span>Грунтовка поверхностей (+50 ₽/м²)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" value="Демонтаж покрытия (+100 ₽/м²)" data-price="100" onchange="calculateEstimate()" class="extra-service rounded text-blue-600 focus:ring-blue-500">
+                                <span>Демонтаж старого покрытия (+100 ₽/м²)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" value="Уборка мусора (+1000 ₽)" data-price-flat="1000" onchange="calculateEstimate()" class="extra-service rounded text-blue-600 focus:ring-blue-500">
+                                <span>Уборка и вынос мусора (+1000 ₽)</span>
+                            </label>
                         </div>
                     </div>
 
-                    <!-- Номер телефона -->
+                    <!-- Итоговая смета -->
+                    <div class="bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900/50 p-3.5 rounded-xl flex justify-between items-center">
+                        <span class="text-xs font-bold text-blue-900 dark:text-blue-200">Примерная смета:</span>
+                        <span id="estimatePrice" class="text-lg font-black text-blue-600 dark:text-blue-400">0 ₽</span>
+                    </div>
+
+                    <!-- Срочность и дата -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Срочность</label>
+                            <select id="urgencyInput" onchange="toggleDateField()" class="w-full p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
+                                <option value="⚡ Срочно (сегодня)">⚡ Срочно (сегодня)</option>
+                                <option value="Завтра">Завтра</option>
+                                <option value="Выбрать дату">Выбрать дату</option>
+                            </select>
+                        </div>
+                        <div id="dateContainer" class="hidden">
+                            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Дата визита</label>
+                            <input type="date" id="dateInput" class="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
+                        </div>
+                    </div>
+
+                    <!-- Загрузка фото -->
                     <div>
-                        <label class="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">Номер телефона</label>
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Фото объекта (необязательно)</label>
+                        <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(event)"
+                            class="w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 dark:file:bg-blue-950 file:text-blue-600 dark:file:text-blue-400 hover:file:bg-blue-100">
+                        <div id="photoPreviews" class="flex flex-wrap gap-2 mt-2"></div>
+                    </div>
+
+                    <!-- Контакты -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Ваше имя</label>
+                        <div class="relative">
+                            <input type="text" id="nameInput" placeholder="Иван" required
+                                class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white pl-10">
+                            <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-400"></i>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Номер телефона</label>
                         <div class="relative">
                             <input type="tel" id="phoneInput" placeholder="+7 (999) 000-00-00" required
-                                class="w-full p-3.5 bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white pl-10 transition">
-                            <i class="fa-solid fa-phone absolute left-3.5 top-4 text-gray-400 dark:text-slate-500"></i>
+                                class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white pl-10">
+                            <i class="fa-solid fa-phone absolute left-3.5 top-3.5 text-slate-400"></i>
                         </div>
                     </div>
 
-                    <!-- Комментарий -->
                     <div>
-                        <label class="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">Комментарий к заказу (необязательно)</label>
-                        <textarea id="commentInput" rows="2" placeholder="Желаемая дата выезда, адрес, особые условия..." 
-                            class="w-full p-3.5 bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white transition"></textarea>
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">Комментарий к заказу</label>
+                        <textarea id="commentInput" rows="2" placeholder="Адрес, состояние стен, удобное время..." 
+                            class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"></textarea>
                     </div>
 
-                    <!-- Кнопка отправки -->
-                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-500/30 active:scale-[0.98] transition flex items-center justify-center space-x-2 text-base">
-                        <i class="fa-solid fa-paper-plane"></i>
-                        <span>Вызвать мастера</span>
+                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/30 active:scale-95 transition">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Отправить заявку
                     </button>
                 </form>
             </div>
 
-            <!-- Экран успеха -->
-            <div id="successView" class="hidden bg-white dark:bg-slate-900 rounded-2xl shadow-sm border dark:border-slate-800 p-8 text-center space-y-4">
-                <div class="w-20 h-20 bg-green-100 dark:bg-green-950/80 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner">
+            <!-- Успешный экран -->
+            <div id="successView" class="hidden bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 text-center space-y-4">
+                <div class="w-16 h-16 bg-green-100 dark:bg-green-950 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
                     <i class="fa-solid fa-check"></i>
                 </div>
-                <h2 class="text-2xl font-black text-gray-800 dark:text-white">Заявка принята!</h2>
-                <p class="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">Диспетчер сервиса «Мастеры Тут» уже обрабатывает ваш заказ. Ожидайте звонка в течение 10–15 минут.</p>
-                <button onclick="resetForm()" class="bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 font-bold px-6 py-3 rounded-xl text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition">
-                    Отправить еще один заказ
+                <h2 class="text-xl font-bold text-slate-800 dark:text-white">Заявка принята!</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Заказ передан мастеру выбранного района. Мы свяжемся с вами в течение 10–15 минут.</p>
+                <button onclick="resetForm()" class="bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 font-semibold px-6 py-2.5 rounded-xl text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition">
+                    Новый заказ
                 </button>
             </div>
         </div>
 
         <!-- Вкладка: О нас -->
-        <div id="aboutTab" class="hidden bg-white dark:bg-slate-900 rounded-2xl shadow-sm border dark:border-slate-800 p-6 space-y-5 text-sm">
-            <div class="flex items-center space-x-3 border-b dark:border-slate-800 pb-3">
-                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center text-xl">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <div>
-                    <h2 class="text-lg font-black text-gray-900 dark:text-white leading-none">«Мастеры Тут»</h2>
-                    <p class="text-xs text-gray-400 mt-0.5">Единая Диспетчерская Служба</p>
-                </div>
-            </div>
-
-            <p class="text-gray-600 dark:text-slate-300 leading-relaxed">
-                Мы берем на себя весь процесс поиска проверенных исполнителей для отделки, штукатурки и ремонта квартир, домов и офисов.
+        <div id="aboutTab" class="hidden bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 space-y-4 text-sm">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2 flex items-center">
+                <i class="fa-solid fa-circle-info text-blue-600 mr-2"></i> О службе «Мастеры Тут»
+            </h2>
+            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                Мы — автоматизированная диспетчерская служба отделочных и строительных работ. Распределяем заказы узкопрофильным мастерам по районам города для быстрой и качественной работы.
             </p>
-
-            <div class="space-y-3">
-                <h3 class="font-bold text-gray-800 dark:text-white text-xs uppercase tracking-wider text-blue-600 dark:text-blue-400">Наши преимущество:</h3>
-                
-                <div class="space-y-2">
-                    <div class="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-800/50 rounded-xl">
-                        <i class="fa-solid fa-user-check text-green-500 mt-1"></i>
-                        <div>
-                            <h4 class="font-bold text-xs text-gray-800 dark:text-slate-200">Проверенные мастера</h4>
-                            <p class="text-xs text-gray-500 dark:text-slate-400">Каждый специалист проходит проверку квалификации.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-800/50 rounded-xl">
-                        <i class="fa-solid fa-stopwatch text-blue-500 mt-1"></i>
-                        <div>
-                            <h4 class="font-bold text-xs text-gray-800 dark:text-slate-200">Быстрый выезд</h4>
-                            <p class="text-xs text-gray-500 dark:text-slate-400">Передаем заявку мастеру сразу после согласования.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-800/50 rounded-xl">
-                        <i class="fa-solid fa-calculator text-indigo-500 mt-1"></i>
-                        <div>
-                            <h4 class="font-bold text-xs text-gray-800 dark:text-slate-200">Прозрачные цены</h4>
-                            <p class="text-xs text-gray-500 dark:text-slate-400">Оценка объема и стоимости работ до начала ремонта.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                <h3 class="font-bold text-slate-800 dark:text-white">Наши преимущества:</h3>
+                <ul class="list-disc pl-5 space-y-1.5 text-slate-600 dark:text-slate-400">
+                    <li>Точный предварительный калькулятор сметы</li>
+                    <li>Проверенные мастера в каждом районе</li>
+                    <li>Быстрый выезд в день обращения</li>
+                    <li>Контроль выполнения работ диспетчером</li>
+                </ul>
             </div>
         </div>
 
-        <!-- Раздел Админ-панели (Диспетчерская) -->
+        <!-- Скрытая Админ-панель -->
         <div id="adminView" class="hidden space-y-4">
-            <div class="flex items-center justify-between bg-white dark:bg-slate-900 p-4 rounded-2xl border dark:border-slate-800 shadow-sm">
+            <div class="flex items-center justify-between bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
                 <div>
-                    <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Панель управления</span>
-                    <h2 class="font-black text-gray-800 dark:text-white text-base">Заказы Диспетчера</h2>
+                    <h2 class="font-bold text-slate-800 dark:text-white">Панель Диспетчера</h2>
+                    <p class="text-xs text-slate-400">Активных заказов: <span id="ordersCount">0</span></p>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-xs font-bold px-2.5 py-1 rounded-lg" id="ordersCount">0</span>
-                    <button onclick="closeAdminPanel()" class="text-xs bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 px-3 py-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 font-bold transition">
-                        Выход
-                    </button>
-                </div>
+                <button onclick="closeAdminPanel()" class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-lg hover:bg-slate-200">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Выход
+                </button>
             </div>
 
-            <!-- Список заказов -->
             <div id="ordersList" class="space-y-3">
-                <!-- Динамически заполняется -->
+                <!-- Карточки заказов -->
             </div>
         </div>
 
     </main>
 
-    <!-- Плавающие кнопки авто-прокрутки (Вверх / Вниз) -->
-    <div class="fixed right-3 bottom-20 flex flex-col space-y-2 z-20">
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-9 h-9 bg-blue-600/90 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition backdrop-blur-sm">
-            <i class="fa-solid fa-chevron-up text-xs"></i>
+    <!-- Кнопки быстрой прокрутки -->
+    <div class="fixed right-4 bottom-20 flex flex-col space-y-2 z-20">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition active:scale-90">
+            <i class="fa-solid fa-arrow-up text-sm"></i>
         </button>
-        <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="w-9 h-9 bg-blue-600/90 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition backdrop-blur-sm">
-            <i class="fa-solid fa-chevron-down text-xs"></i>
+        <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition active:scale-90">
+            <i class="fa-solid fa-arrow-down text-sm"></i>
         </button>
     </div>
 
-    <!-- Фиксированное нижнее меню -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t dark:border-slate-800/80 flex justify-around p-2 z-30 shadow-lg transition-colors duration-300">
-        <button onclick="switchTab('home')" id="navHome" class="flex flex-col items-center text-blue-600 dark:text-blue-400 text-[11px] font-bold transition py-1 px-4 rounded-xl">
-            <i class="fa-solid fa-house-circle-check text-lg mb-0.5"></i> Главная
+    <!-- Нижнее меню (Bottom Navigation) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex justify-around p-2.5 z-30 shadow-lg transition-colors duration-200">
+        <button onclick="switchTab('home')" id="navHome" class="flex flex-col items-center text-blue-600 dark:text-blue-400 text-xs font-bold transition">
+            <i class="fa-solid fa-house text-lg mb-0.5"></i> Главная
         </button>
-        <button onclick="switchTab('about')" id="navAbout" class="flex flex-col items-center text-gray-400 dark:text-slate-500 text-[11px] font-semibold hover:text-gray-600 transition py-1 px-4 rounded-xl">
+        <button onclick="switchTab('about')" id="navAbout" class="flex flex-col items-center text-slate-400 dark:text-slate-500 text-xs font-semibold hover:text-slate-600 transition">
             <i class="fa-solid fa-circle-info text-lg mb-0.5"></i> О нас
         </button>
     </nav>
 
-    <!-- Модалка ввода PIN-кода Диспетчера -->
-    <div id="adminModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 w-full max-w-xs text-center space-y-4 shadow-2xl border dark:border-slate-800">
-            <div class="w-14 h-14 bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-inner">
-                <i class="fa-solid fa-user-gear"></i>
+    <!-- Модалка ввода PIN-кода Админа -->
+    <div id="adminModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-xs text-center space-y-4 shadow-xl border border-slate-200 dark:border-slate-800">
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-xl mx-auto">
+                <i class="fa-solid fa-user-shield"></i>
             </div>
-            <div>
-                <h3 class="font-black text-gray-800 dark:text-white text-lg">Вход Диспетчера</h3>
-                <p class="text-xs text-gray-400 mt-1">Введите пароль для просмотра заявок (по умолчанию: 1234)</p>
-            </div>
+            <h3 class="font-bold text-slate-800 dark:text-white">Вход для Диспетчера</h3>
+            <p class="text-xs text-slate-400">Введите PIN-код (по умолчанию: 1234)</p>
             <input type="password" id="adminPassword" placeholder="PIN" 
-                class="w-full p-3.5 bg-gray-50 dark:bg-slate-800 border dark:border-slate-700 rounded-xl text-center text-xl font-black tracking-widest outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
-            <div class="flex space-x-2 pt-1">
-                <button onclick="closeAdminModal()" class="w-1/2 py-3 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 rounded-xl text-xs font-bold hover:bg-gray-200 transition">Отмена</button>
-                <button onclick="checkAdminPassword()" class="w-1/2 py-3 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition">Войти</button>
+                class="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-center text-lg font-bold tracking-widest outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
+            <div class="flex space-x-2">
+                <button onclick="closeAdminModal()" class="w-1/2 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl text-sm font-semibold">Отмена</button>
+                <button onclick="checkAdminPassword()" class="w-1/2 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold">Войти</button>
             </div>
         </div>
     </div>
 
-    <!-- Логика скрипта -->
     <script>
-        // СПИСОК СТРОИТЕЛЬНЫХ УСЛУГ
+        // СПИСОК УСЛУГ И ИХ БАЗОВЫЕ РАСЦЕНКИ
         const SERVICES = [
-            { id: 'putty', name: 'Шпаклевка стен', icon: 'fa-paint-roller' },
-            { id: 'plaster', name: 'Штукатурка стен', icon: 'fa-cubes' },
-            { id: 'painting', name: 'Покраска стен и потолков', icon: 'fa-brush' },
-            { id: 'wallpaper', name: 'Поклейка обоев', icon: 'fa-scroll' },
-            { id: 'tiles', name: 'Укладка плитки', icon: 'fa-border-all' },
-            { id: 'drywall', name: 'Монтаж гипсокартона', icon: 'fa-vector-square' },
-            { id: 'electric', name: 'Электромонтажные работы', icon: 'fa-bolt' },
-            { id: 'plumbing', name: 'Сантехнические работы', icon: 'fa-faucet' },
-            { id: 'demolition', name: 'Демонтажные работы', icon: 'fa-hammer' },
-            { id: 'complex', name: 'Ремонт под ключ', icon: 'fa-house-chimney-crack' }
+            { id: 'putty', name: 'Шпаклевка стен', icon: 'fa-paint-roller', price: 250 },
+            { id: 'plaster', name: 'Штукатурка стен', icon: 'fa-cubes', price: 400 },
+            { id: 'painting', name: 'Покраска стен', icon: 'fa-brush', price: 200 },
+            { id: 'wallpaper', name: 'Поклейка обоев', icon: 'fa-scroll', price: 220 },
+            { id: 'tiles', name: 'Укладка плитки', icon: 'fa-border-all', price: 900 },
+            { id: 'drywall', name: 'Монтаж гипсокартона', icon: 'fa-vector-square', price: 500 },
+            { id: 'electric', name: 'Электромонтаж', icon: 'fa-bolt', price: 600 },
+            { id: 'plumbing', name: 'Сантехника', icon: 'fa-faucet', price: 800 },
+            { id: 'demolition', name: 'Демонтаж', icon: 'fa-hammer', price: 150 },
+            { id: 'complex', name: 'Ремонт под ключ', icon: 'fa-house-chimney-crack', price: 2500 }
         ];
 
+        // Список мастеров для назначения в админке
+        const MASTERS = ["Алексей (Маляр)", "Иван (Штукатур/Плиточник)", "Сергей (Электрик)", "Михаил (Сантехник)", "Бригада №1"];
+
         let selectedService = SERVICES[0];
+        let uploadedPhotos = [];
         const ADMIN_PIN = "1234";
 
-        // ТОКЕН И CHAT_ID БОТА (При необходимости замените на ваши данные)
         const BOT_TOKEN = "ВАШ_ТОКЕН_БОТА"; 
         const CHAT_ID = "ВАШ_CHAT_ID";
 
         document.addEventListener('DOMContentLoaded', () => {
             renderServicesMenu();
-            loadOrders();
+            calculateEstimate();
         });
 
-        // ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
         function toggleTheme() {
             const html = document.documentElement;
             const icon = document.getElementById('themeIcon');
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
-                icon.className = "fa-solid fa-moon text-slate-700";
+                icon.className = "fa-solid fa-moon text-slate-600";
             } else {
                 html.classList.add('dark');
-                icon.className = "fa-solid fa-sun text-yellow-400";
+                icon.className = "fa-solid fa-sun text-yellow-300";
             }
         }
 
-        // НАВИГАЦИЯ ВНИЗУ
         function switchTab(tabName) {
             const homeTab = document.getElementById('homeTab');
             const aboutTab = document.getElementById('aboutTab');
@@ -349,23 +330,23 @@
             if (tabName === 'home') {
                 homeTab.classList.remove('hidden');
                 aboutTab.classList.add('hidden');
-                navHome.className = "flex flex-col items-center text-blue-600 dark:text-blue-400 text-[11px] font-bold transition py-1 px-4 rounded-xl";
-                navAbout.className = "flex flex-col items-center text-gray-400 dark:text-slate-500 text-[11px] font-semibold hover:text-gray-600 transition py-1 px-4 rounded-xl";
+                navHome.className = "flex flex-col items-center text-blue-600 dark:text-blue-400 text-xs font-bold transition";
+                navAbout.className = "flex flex-col items-center text-slate-400 dark:text-slate-500 text-xs font-semibold hover:text-slate-600 transition";
             } else if (tabName === 'about') {
                 aboutTab.classList.remove('hidden');
                 homeTab.classList.add('hidden');
-                navAbout.className = "flex flex-col items-center text-blue-600 dark:text-blue-400 text-[11px] font-bold transition py-1 px-4 rounded-xl";
-                navHome.className = "flex flex-col items-center text-gray-400 dark:text-slate-500 text-[11px] font-semibold hover:text-gray-600 transition py-1 px-4 rounded-xl";
+                navAbout.className = "flex flex-col items-center text-blue-600 dark:text-blue-400 text-xs font-bold transition";
+                navHome.className = "flex flex-col items-center text-slate-400 dark:text-slate-500 text-xs font-semibold hover:text-slate-600 transition";
             }
         }
 
-        // РЕНДЕР БОКОВОГО МЕНЮ
         function renderServicesMenu() {
             const container = document.getElementById('servicesList');
             container.innerHTML = SERVICES.map(s => `
-                <button onclick="selectService('${s.id}')" class="w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800/80 transition text-left text-xs font-semibold text-gray-700 dark:text-slate-200">
-                    <i class="fa-solid ${s.icon} text-blue-600 dark:text-blue-400 w-5 text-center text-sm"></i>
-                    <span>${s.name}</span>
+                <button onclick="selectService('${s.id}')" class="w-full flex items-center space-x-3 p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left text-sm text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid ${s.icon} text-blue-600 dark:text-blue-400 w-5 text-center"></i>
+                    <span class="font-medium flex-1">${s.name}</span>
+                    <span class="text-[10px] text-slate-400">${s.price}₽/м²</span>
                 </button>
             `).join('');
         }
@@ -373,12 +354,52 @@
         function selectService(id) {
             selectedService = SERVICES.find(s => s.id === id);
             document.getElementById('selectedServiceName').innerText = selectedService.name;
+            document.getElementById('pricePerUnit').innerText = `${selectedService.price} ₽ / кв.м`;
             document.getElementById('serviceIcon').innerHTML = `<i class="fa-solid ${selectedService.icon}"></i>`;
+            calculateEstimate();
             switchTab('home');
             closeDrawer();
         }
 
-        // РАБОТА С DRAWER
+        function calculateEstimate() {
+            const area = parseFloat(document.getElementById('areaInput').value) || 0;
+            let total = area * selectedService.price;
+
+            document.querySelectorAll('.extra-service:checked').forEach(cb => {
+                if(cb.dataset.price) total += area * parseFloat(cb.dataset.price);
+                if(cb.dataset.priceFlat) total += parseFloat(cb.dataset.priceFlat);
+            });
+
+            document.getElementById('estimatePrice').innerText = `${total.toLocaleString('ru-RU')} ₽`;
+        }
+
+        function toggleDateField() {
+            const val = document.getElementById('urgencyInput').value;
+            const container = document.getElementById('dateContainer');
+            if(val === 'Выбрать дату') {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            const previews = document.getElementById('photoPreviews');
+            previews.innerHTML = '';
+            uploadedPhotos = [];
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedPhotos.push(e.target.result);
+                    previews.innerHTML += `<img src="${e.target.result}" class="w-12 h-12 object-cover rounded-lg border dark:border-slate-700">`;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Боковое меню (Drawer)
         const drawer = document.getElementById('drawer');
         const overlay = document.getElementById('drawerOverlay');
 
@@ -396,18 +417,28 @@
             overlay.classList.add('hidden');
         }
 
-        // ОТПРАВКА ФОРМЫ ЗАКАЗА
+        // Отправка формы заказа
         document.getElementById('orderForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            const extras = Array.from(document.querySelectorAll('.extra-service:checked')).map(cb => cb.value);
+            const urgencyVal = document.getElementById('urgencyInput').value;
+            const dateVal = document.getElementById('dateInput').value;
 
             const order = {
                 id: Date.now(),
                 date: new Date().toLocaleString('ru-RU'),
                 service: selectedService.name,
+                district: document.getElementById('districtInput').value,
                 area: document.getElementById('areaInput').value,
+                extras: extras.length ? extras.join(', ') : 'Нет',
+                estimate: document.getElementById('estimatePrice').innerText,
+                urgency: urgencyVal === 'Выбрать дату' ? `Дата: ${dateVal}` : urgencyVal,
                 name: document.getElementById('nameInput').value,
                 phone: document.getElementById('phoneInput').value,
                 comment: document.getElementById('commentInput').value || 'Нет',
+                photos: uploadedPhotos,
+                assignedMaster: 'Не назначен',
                 status: 'Новый'
             };
 
@@ -420,24 +451,26 @@
 
         function resetForm() {
             document.getElementById('orderForm').reset();
+            document.getElementById('photoPreviews').innerHTML = '';
+            uploadedPhotos = [];
+            calculateEstimate();
             document.getElementById('orderView').classList.remove('hidden');
             document.getElementById('successView').classList.add('hidden');
         }
 
-        // LOCALSTORAGE ЗАКАЗОВ
         function saveOrderLocally(order) {
-            let orders = JSON.parse(localStorage.getItem('mt_orders') || '[]');
+            let orders = JSON.parse(localStorage.getItem('disp_orders') || '[]');
             orders.unshift(order);
-            localStorage.setItem('mt_orders', JSON.stringify(orders));
+            localStorage.setItem('disp_orders', JSON.stringify(orders));
         }
 
         function getOrders() {
-            return JSON.parse(localStorage.getItem('mt_orders') || '[]');
+            return JSON.parse(localStorage.getItem('disp_orders') || '[]');
         }
 
         function deleteOrder(id) {
             let orders = getOrders().filter(o => o.id !== id);
-            localStorage.setItem('mt_orders', JSON.stringify(orders));
+            localStorage.setItem('disp_orders', JSON.stringify(orders));
             renderOrders();
         }
 
@@ -445,11 +478,36 @@
             let orders = getOrders();
             let order = orders.find(o => o.id === id);
             if(order) order.status = newStatus;
-            localStorage.setItem('mt_orders', JSON.stringify(orders));
+            localStorage.setItem('disp_orders', JSON.stringify(orders));
             renderOrders();
         }
 
-        // АДМИН ПАНЕЛЬ
+        function assignMaster(id, masterName) {
+            let orders = getOrders();
+            let order = orders.find(o => o.id === id);
+            if(order) order.assignedMaster = masterName;
+            localStorage.setItem('disp_orders', JSON.stringify(orders));
+        }
+
+        function sendToMaster(id) {
+            const order = getOrders().find(o => o.id === id);
+            if(!order) return;
+
+            const text = `🛠 *ЗАКАЗ ДЛЯ МАСТЕРА*\n\n` +
+                         `📌 *Услуга:* ${order.service}\n` +
+                         `📍 *Район:* ${order.district}\n` +
+                         `📐 *Объем:* ${order.area} кв.м\n` +
+                         `➕ *Доп:* ${order.extras}\n` +
+                         `💰 *Смета:* ${order.estimate}\n` +
+                         `⏰ *Сроки:* ${order.urgency}\n\n` +
+                         `👤 *Клиент:* ${order.name}\n` +
+                         `📞 *Тел:* ${order.phone}\n` +
+                         `💬 *Заметка:* ${order.comment}`;
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // Секретная админка
         function openAdminModal() {
             document.getElementById('adminModal').classList.remove('hidden');
         }
@@ -465,7 +523,7 @@
                 closeAdminModal();
                 showAdminPanel();
             } else {
-                alert('Неверный пароль!');
+                alert('Неверный PIN!');
             }
         }
 
@@ -487,15 +545,15 @@
             const container = document.getElementById('ordersList');
 
             if(orders.length === 0) {
-                container.innerHTML = `<div class="bg-white dark:bg-slate-900 rounded-2xl p-8 text-center text-gray-400 dark:text-slate-500 text-xs border dark:border-slate-800">Заказов пока нет</div>`;
+                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">Заказов пока нет</div>`;
                 return;
             }
 
             container.innerHTML = orders.map(o => `
-                <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border dark:border-slate-800 space-y-2.5 transition">
-                    <div class="flex items-center justify-between border-b dark:border-slate-800 pb-2">
-                        <span class="text-[10px] font-semibold text-gray-400 dark:text-slate-500">${o.date}</span>
-                        <select onchange="updateStatus(${o.id}, this.value)" class="text-[11px] font-bold px-2 py-1 rounded-lg outline-none ${o.status === 'Новый' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-950/80 dark:text-yellow-400' : o.status === 'В работе' ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-400' : 'bg-green-100 text-green-800 dark:bg-green-950/80 dark:text-green-400'}">
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                        <span class="text-[10px] text-slate-400">${o.date}</span>
+                        <select onchange="updateStatus(${o.id}, this.value)" class="text-xs font-semibold px-2 py-1 rounded-lg ${o.status === 'Новый' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400' : o.status === 'В работе' ? 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400' : 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400'}">
                             <option value="Новый" ${o.status==='Новый'?'selected':''}>Новый</option>
                             <option value="В работе" ${o.status==='В работе'?'selected':''}>В работе</option>
                             <option value="Выполнен" ${o.status==='Выполнен'?'selected':''}>Выполнен</option>
@@ -503,33 +561,54 @@
                     </div>
 
                     <div>
-                        <h4 class="font-black text-gray-800 dark:text-white text-sm">${o.service}</h4>
-                        <p class="text-xs text-gray-600 dark:text-slate-300 mt-1">📐 <b>Объем:</b> ${o.area}</p>
-                        <p class="text-xs text-gray-600 dark:text-slate-300">👤 <b>Имя:</b> ${o.name}</p>
-                        <p class="text-xs text-gray-600 dark:text-slate-300">💬 <b>Заметка:</b> ${o.comment}</p>
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-slate-800 dark:text-white text-sm">${o.service}</h4>
+                            <span class="text-xs font-black text-blue-600 dark:text-blue-400">${o.estimate}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">📍 <b>Район:</b> ${o.district}</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">📐 <b>Объем:</b> ${o.area} кв.м | <b>Сроки:</b> ${o.urgency}</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">➕ <b>Доп:</b> ${o.extras}</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">👤 <b>Клиент:</b> ${o.name} (${o.phone})</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">💬 <b>Комментарий:</b> ${o.comment}</p>
+                        ${o.photos && o.photos.length ? `<div class="flex gap-1 mt-2">${o.photos.map(p => `<img src="${p}" class="w-10 h-10 object-cover rounded border">`).join('')}</div>` : ''}
                     </div>
 
-                    <div class="flex items-center justify-between pt-2 border-t dark:border-slate-800">
-                        <a href="tel:${o.phone}" class="bg-green-600 hover:bg-green-700 text-white text-xs px-3.5 py-2 rounded-xl font-bold flex items-center space-x-1.5 transition">
-                            <i class="fa-solid fa-phone"></i>
-                            <span>${o.phone}</span>
-                        </a>
-                        <button onclick="deleteOrder(${o.id})" class="text-red-500 hover:text-red-700 text-xs px-2 py-1 font-semibold">
-                            <i class="fa-solid fa-trash-can mr-1"></i> Удалить
-                        </button>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-slate-400">Мастер:</span>
+                            <select onchange="assignMaster(${o.id}, this.value)" class="flex-1 text-xs p-1 bg-slate-50 dark:bg-slate-800 border rounded dark:text-white">
+                                <option value="Не назначен">-- Выбрать мастера --</option>
+                                ${MASTERS.map(m => `<option value="${m}" ${o.assignedMaster===m?'selected':''}>${m}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <a href="tel:${o.phone}" class="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1.5 rounded-lg font-semibold flex items-center space-x-1">
+                                <i class="fa-solid fa-phone"></i>
+                                <span>Позвонить</span>
+                            </a>
+                            <button onclick="sendToMaster(${o.id})" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded-lg font-semibold flex items-center space-x-1">
+                                <i class="fa-solid fa-share-nodes"></i>
+                                <span>Передать ТЗ</span>
+                            </button>
+                            <button onclick="deleteOrder(${o.id})" class="text-red-500 hover:text-red-700 text-xs px-2 py-1">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // ТЕЛЕГРАМ / MAX УВЕДОМЛЕНИЕ
         async function sendTelegramNotification(order) {
             if(!BOT_TOKEN || BOT_TOKEN === "ВАШ_ТОКЕН_БОТА") return;
 
             const text = `🚨 *НОВЫЙ ЗАКАЗ В «МАСТЕРЫ ТУТ»!*\n\n` +
                          `🛠 *Услуга:* ${order.service}\n` +
-                         `📐 *Объем:* ${order.area}\n` +
-                         `👤 *Клиент:* ${order.name}\n` +
+                         `📍 *Район:* ${order.district}\n` +
+                         `📐 *Объем:* ${order.area} кв.м\n` +
+                         `💰 *Смета:* ${order.estimate}\n` +
+                         `⏰ *Сроки:* ${order.urgency}\n` +
+                         `👤 *Имя:* ${order.name}\n` +
                          `📞 *Телефон:* ${order.phone}\n` +
                          `💬 *Комментарий:* ${order.comment}`;
 
@@ -540,7 +619,7 @@
                     body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
                 });
             } catch (e) {
-                console.error("Ошибка отправки", e);
+                console.error("Ошибка отправки в бота", e);
             }
         }
     </script>
