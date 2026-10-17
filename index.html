@@ -205,12 +205,16 @@
 
     <script>
         // ----------------------------------------------------
-        // ВАШИ КЛЮЧИ SUPABASE (АКТУАЛЬНЫЙ JWT ТОКЕН):
+        // ВАШИ КЛЮЧИ SUPABASE:
         // ----------------------------------------------------
         const SUPABASE_URL = "https://dcmfuqaucgsvhcfglrpu.supabase.co"; 
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjbWZ1cWF1Y2dzdmhjZmdscnB1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxOTM1MzUsImV4cCI6MjEwNzc2OTUzNX0.FVuOkJw1IHVKxT6jYxrmI4J1nv8LrGz9SaLOZIHXcYk"; 
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Ключи для отправки в Telegram
+        const TG_BOT_TOKEN = "8645124315:AAGmyJ0kulqfLtjwc8TFiYiymEc47S-nNH0";
+        const TG_GROUP_CHAT_ID = "-1003947428993";
 
         const SERVICES = [
             { id: 'putty', name: 'Шпаклевка стен', icon: 'fa-paint-roller', price: 250 },
@@ -304,7 +308,7 @@
             const dateVal = document.getElementById('dateInput').value;
 
             const newOrder = {
-                service: selectedService.name,
+                services: selectedService.name,
                 district: document.getElementById('districtInput').value,
                 area: parseFloat(document.getElementById('areaInput').value),
                 extras: extras.length ? extras.join(', ') : 'Нет',
@@ -317,7 +321,8 @@
                 assigned_master: 'Не назначен'
             };
 
-            const { data, error } = await supabaseClient.from('orders').insert([newOrder]);
+            // 1. Сохраняем в Supabase
+            const { data, error } = await supabaseClient.from('orders').insert([newOrder]).select();
 
             btn.disabled = false;
             btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-2"></i> Отправить заявку`;
@@ -325,6 +330,36 @@
             if(error) {
                 alert("Ошибка при сохранении: " + error.message);
             } else {
+                // 2. Если заказ успешно сохранился, отправляем уведомление в Telegram-группу
+                if (data && data.length > 0) {
+                    const savedOrder = data[0];
+                    try {
+                        const messageText = `🔨 *НОВЫЙ ЗАКАЗ #${savedOrder.id}*\n\n` +
+                            `📋 *Услуга:* ${savedOrder.services}\n` +
+                            `💰 *Смета:* ${savedOrder.estimate}\n` +
+                            `⚡ *Срочность:* ${savedOrder.urgency}\n` +
+                            `📍 *Район:* ${savedOrder.district}\n\n` +
+                            `*(Контакты клиента будут доступны после принятия заказа)*`;
+
+                        await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                chat_id: TG_GROUP_CHAT_ID,
+                                text: messageText,
+                                parse_mode: "Markdown",
+                                reply_markup: {
+                                    inline_keyboard: [
+                                        [{ text: "✋ Взять заказ", callback_data: `claim_${savedOrder.id}` }]
+                                    ]
+                                }
+                            })
+                        });
+                    } catch (tgErr) {
+                        console.error("Ошибка отправки в Telegram:", tgErr);
+                    }
+                }
+
                 document.getElementById('orderView').classList.add('hidden');
                 document.getElementById('successView').classList.remove('hidden');
             }
@@ -415,7 +450,7 @@
 
                     <div>
                         <div class="flex justify-between items-start">
-                            <h4 class="font-bold text-slate-800 dark:text-white text-sm">${o.service}</h4>
+                            <h4 class="font-bold text-slate-800 dark:text-white text-sm">${o.services || o.service}</h4>
                             <span class="text-xs font-black text-blue-600">${o.estimate}</span>
                         </div>
                         <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">📍 <b>Район:</b> ${o.district}</p>
